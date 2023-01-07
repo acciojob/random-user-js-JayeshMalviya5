@@ -1,2 +1,9 @@
+.buttons{
+    position: absolute;
+    top: 300px;
+}
 
-/* Your CSS Code here. */
+.resetBtn{
+position: absolute;
+top: 350px;
+}

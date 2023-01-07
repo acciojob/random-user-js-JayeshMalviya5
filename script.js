@@ -1,51 +1,56 @@
+let user = document.getElementsByClassName('userInfo')[0];
+let getInfo = document.getElementsByClassName('getInfo')[0];
+let button = document.querySelectorAll('.button');
+let reset = document.getElementById('getUser');
+console.log(button);
 
-      const userInfoDiv = document.getElementById("user-info");
-      const additionalInfoDiv = document.getElementById("additional-info");
-      const buttons = document.querySelectorAll("button");
-      let currentUser;
+var currentUser;
 
-      // fetch a random user when the page loads
-      fetch("https://randomuser.me/api/")
-        .then(response => response.json())
-        .then(data => {
-          currentUser = data.results[0];
-          // display the user's name and image
-          userInfoDiv.innerHTML = `
-            <h2>${currentUser.name.first} ${currentUser.name.last}</h2>
-            <img src="${currentUser.picture.large}" alt="Profile picture">
-          `;
-        });
+fetch('https://randomuser.me/api/')
+.then(data => data.json())
+.then((e)=>{
+    currentUser = e.results[0];
+    console.log(currentUser);
+    insertDetails(e);
+})
 
-      // handle clicks on the buttons
-      buttons.forEach(button => {
-        button.addEventListener("click", (e) => {
-          const attr = e.target.getAttribute("data-attr");
-          let info;
-          if (attr === "age") {
-            info = currentUser.dob.age;
-          } else if (attr === "email") {
-            info = currentUser.email;
-          } else if (attr === "phone") {
-            info = currentUser.phone;
-          }
-          additionalInfoDiv.innerHTML = `<p>${attr}: ${info}</p>`;
-        });
-      });
+reset.addEventListener('click',refreshData);
 
-      // handle clicks on the "Get New User" button
-      const getUserButton = document.getElementById("getUser");
-      getUserButton.addEventListener("click", () => {
-        fetch("https://randomuser.me/api/")
-          .then(response => response.json())
-          .then(data => {
-            currentUser = data.results[0];
-            // display the user's name and image
-            userInfoDiv.innerHTML = `
-              <h2>${currentUser.name.first} ${currentUser.name.last}</h2>
-              <img src="${currentUser.picture.large}" alt="Profile picture">
-            `;
-            // clear the additional info
-            additionalInfoDiv.innerHTML = "";
-          });
-      });
-    
+function refreshData(){
+    fetch('https://randomuser.me/api/')
+.then(data => data.json())
+.then((e)=>{
+    currentUser = e.results[0];
+    insertDetails(e);
+    console.log(currentUser);
+    getInfo.innerHTML = '';
+})
+}
+
+
+function insertDetails(e){
+     user.innerHTML = `<div><img src="${e.results[0].picture.large}"></div><div><h3>${e.results[0].name.title} ${e.results[0].name.first} ${e.results[0].name.last}</h3></div>`
+     
+}
+
+button.forEach((buttons)=>{
+   buttons.addEventListener('click', event =>{
+    let attr = event.target.getAttribute('data-attr');
+    let info;
+     if(attr == 'age'){
+         info = currentUser.dob.age;
+     }
+     if(attr == 'phone'){
+        info = currentUser.phone;
+    }
+    if(attr == 'email'){
+        info = currentUser.email;
+    }
+    getInfo.innerHTML = `<h3>${attr} : ${info}</h3>`
+     
+    console.log(event.target.getAttribute('data-attr'));
+   })
+})
+
+
+
