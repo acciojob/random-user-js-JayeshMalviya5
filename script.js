@@ -18,8 +18,8 @@
 
       // handle clicks on the buttons
       buttons.forEach(button => {
-        button.addEventListener("click", event => {
-          const attr = event.target.getAttribute("data-attr");
+        button.addEventListener("click", (e) => {
+          const attr = e.target.getAttribute("data-attr");
           let info;
           if (attr === "age") {
             info = currentUser.dob.age;
